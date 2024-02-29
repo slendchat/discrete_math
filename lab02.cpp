@@ -1,13 +1,10 @@
 #include <iostream>
-#include <cmath>
 
 using std::cin; 
 using std::cout;
 using std::endl;
 
 #define SIZEARR 8
-
-
 
 bool implication(bool a, bool b) 
 {

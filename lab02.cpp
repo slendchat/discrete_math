@@ -14,6 +14,7 @@ bool equivalence(bool a, bool b)
 {
   return a == b;
 }
+//(P ^ (Q V R) -> ((R -> (P -> Q)) <-> (Q -> (R -> P))) )
 bool func1(bool p, bool q,bool r)
 {
   bool res = implication(p && (q || r), equivalence(implication( r , implication(p, q) ), implication(q, implication(r,p) )) );
@@ -53,9 +54,10 @@ bool contradiction(bool* res)
 {
   return !(satisfiability(res));
 }
-bool is_dummy(bool* v, bool* t, int v_count)
+// проверка на фиктивные переменные
+bool is_dummy(bool* input, int v_count)
 {
-  bool temp=1;
+  bool res=1;
   if(v_count==1)
     goto v1;
   else if(v_count==2)
@@ -63,23 +65,25 @@ bool is_dummy(bool* v, bool* t, int v_count)
   else if(v_count==3)
     goto v3;
   else
-    return 0;
+    return -1;
 
 v1:
-  return (v[0]==v[3] && t[0]==t[3])&&(v[4]==v[7] && t[4]==t[7]);
-
+  for(int i = 0; i+4<SIZEARR;i++){
+    res = res && (input[i]==input[i+4]);
+  }
+  return res;
 v2:
   for (int i = 0; i <= 4; i+=4){
-    temp = temp && (v[i]==v[i+2] && t[i] == t[i+2]);
-    temp = temp && (v[i+1]==v[i+3] && t[i+1] == t[i+3]);
+    res = res && (input[i] == input[i+2]);
+    res = res && (input[i+1] == input[i+3]);
   }
-  return temp;
+  return res;
 
 v3:
   for (int i = 0; i < SIZEARR; i+=2){
-    temp = temp && (v[i] == v[i+1] && t[i]==t[i+1]);
+    res = res && (input[i]==input[i+1]);
   }
-  return temp;
+  return res;
 }
 
 int main()
@@ -104,9 +108,9 @@ int main()
   cout<<"tautology: "<<tautology(res)<<endl;
   cout<<"contradiction: "<<contradiction(res)<<endl;
   cout<<endl;
-  cout<<"is dummy p? - "<<is_dummy(p,res,1)<<endl;
-  cout<<"is dummy q? - "<<is_dummy(q,res,2)<<endl;
-  cout<<"is dummy r? - "<<is_dummy(r,res,3)<<endl;
+  cout<<"is p dummy? - "<<is_dummy(res,1)<<endl;
+  cout<<"is q dummy? - "<<is_dummy(res,2)<<endl;
+  cout<<"is r dummy? - "<<is_dummy(res,3)<<endl;
   
 
 }

@@ -5,7 +5,7 @@ using std::endl;
 
 int f(int x, int y, int z)
 {
-  return (x || y || z);
+  return (x || (y && !y) || z);
 }
 
 void fill_table(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size)
@@ -43,15 +43,23 @@ void is_dummy(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size)
   int ydummy = 1;
   int zdummy = 1;
 
-  for (int i = 0; i+ size/2 < size; i++){
-    xdummy = xdummy && (f_arr[i] == f_arr[i+4]);
-  }
-  for (int i = 0; i <= size/2; i+=size/2){
-    ydummy = ydummy && (f_arr[i] == f_arr[i+2]);
-    ydummy = ydummy && (f_arr[i+1] == f_arr[i+3]);
-  }
-  for (int i = 0; i < size; i+=size/4){
-    zdummy = zdummy && (f_arr[i] == f_arr[i+1]);
+  for (int i = 0; i < size-1; i++){
+    int x = x_arr[i];
+    int y = y_arr[i];
+    int z = z_arr[i];
+    int f = f_arr[i];
+    
+    for(int j = i+1; j < size; j++){
+      if (x != x_arr[j] && y == y_arr[j] && z == z_arr[j]){
+        xdummy = xdummy && (f == f_arr[j]);
+      }
+      if (y != y_arr[j] && x == x_arr[j] && z == z_arr[j]){
+        ydummy = ydummy && (f == f_arr[j]);
+      }
+      if (z != z_arr[j] && y == y_arr[j] && x == x_arr[j]){
+        zdummy = zdummy && (f == f_arr[j]);
+      }
+    }
   }
 
   cout<<"find dummy variables"<<endl;
@@ -102,7 +110,6 @@ void is_monotonic(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size){
   
   int is_monotonic = 1;
 
-
   if(t0(f_arr, size) || t1(f_arr, size)){
     cout<<"monotonic"<<endl;
     return;
@@ -122,7 +129,6 @@ void is_monotonic(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size){
     }
   }
   cout<<"monotonic"<<endl;
-  
   
   return;
 }

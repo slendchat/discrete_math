@@ -1,9 +1,7 @@
 #include <iostream>
-#include <vector>
 
 using std::cout;
 using std::endl;
-using std::vector;
 
 int f(int x, int y, int z)
 {
@@ -12,7 +10,7 @@ int f(int x, int y, int z)
 
 void fill_table(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size)
 {
-  vector<int> values = {0, 1};
+  int values[2] = {0, 1};
   int i = 0;
   for (int x : values){
     for (int y : values){

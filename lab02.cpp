@@ -15,9 +15,9 @@ bool equivalence(bool a, bool b)
   return a == b;
 }
 //(P ^ (Q V R) -> ((R -> (P -> Q)) <-> (Q -> (R -> P))) )
-bool func1(bool p, bool q,bool r)
+bool func1(bool p, bool q, bool r)
 {
-  bool res = implication(p && (q || r), equivalence(implication( r , implication(p, q) ), implication(q, implication(r,p) )) );
+  bool res = equivalence(p && (implication(q,!r) || r),implication(equivalence(p,r || !q),q && !q));
   return res;
 }
 
@@ -78,7 +78,6 @@ v2:
     res = res && (input[i+1] == input[i+3]);
   }
   return res;
-
 v3:
   for (int i = 0; i < SIZEARR; i+=2){
     res = res && (input[i]==input[i+1]);

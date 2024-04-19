@@ -1,14 +1,43 @@
+// доделать отчет и написать вывод программы в выводе отчета
+// Добавить функцию из 2 лабы
+
 #include <iostream>
 
 using std::cout;
 using std::endl;
 
-int f(int x, int y, int z)
+int implication(int a, int b) 
+{
+    return !a || b;
+}
+int equivalence(int a, int b)
+{
+  return a == b;
+}
+int f1(int x, int y, int z)
 {
   return (x || (y && !y) || z);
 }
+//(P ^ (Q V R) -> ((R -> (P -> Q)) <-> (Q -> (R -> P))) )
+int f2(int x, int y, int z)
+{
+  return (equivalence(x && (implication(y,!z) || z),implication(equivalence(x,z || !y),y && !y)));
+}
 
-void fill_table(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size)
+//((x | y)+(y|z))->(x v (!(y pirs z)))
+int f3(int x, int y, int z)
+{
+  return implication(!(x && y) ^ !(y && z), (x || !(!(y || z))));
+}
+
+//((x -> y) pirs z) | (!(x -> y))
+int f4(int x, int y, int z)
+{
+  return (!((implication(x,y) || z) && (!(implication(x,y)))));
+}
+
+
+void fill_table(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size, int(*f)(int x, int y, int z))
 {
   int values[2] = {0, 1};
   int i = 0;
@@ -88,13 +117,13 @@ void is_dummy(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size)
 
 
 int t1(int *f_arr, int size){
-  int res = f(1,1,1);
+  int res = f_arr[7];
   cout<<"t1: "<<res<<endl;
   return res;
 }
 
 int t0(int *f_arr, int size){
-  int res = !f(0,0,0);
+  int res = !f_arr[0];
   cout<<"t0: "<<res<<endl;
   return res;
 }
@@ -122,6 +151,15 @@ void is_monotonic(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size){
   return;
 }
 
+void analyze_func(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size, int(*f)(int x, int y, int z))
+{
+  fill_table(x_arr, y_arr, z_arr, f_arr, 8,f);
+  print_table(x_arr, y_arr, z_arr, f_arr, 8);
+  is_dummy(x_arr, y_arr, z_arr, f_arr, 8);
+  t1(f_arr, 8);
+  t0(f_arr, 8);
+  is_monotonic(x_arr, y_arr, z_arr, f_arr, 8);
+}
 
 int main()
 {
@@ -130,12 +168,15 @@ int main()
   int *z_arr = new int[8];
   int *f_arr = new int[8];
   
-  fill_table(x_arr, y_arr, z_arr, f_arr, 8);
-  print_table(x_arr, y_arr, z_arr, f_arr, 8);
-  is_dummy(x_arr, y_arr, z_arr, f_arr, 8);
-  t1(f_arr, 8);
-  t0(f_arr, 8);
-  is_monotonic(x_arr, y_arr, z_arr, f_arr, 8);
+  //f1
+  analyze_func(x_arr, y_arr, z_arr, f_arr, 8,f1);
+  //f2
+  analyze_func(x_arr, y_arr, z_arr, f_arr, 8,f2);
+  //f3
+  analyze_func(x_arr, y_arr, z_arr, f_arr, 8,f3);
+  //f4
+  analyze_func(x_arr, y_arr, z_arr, f_arr, 8,f4);
+
 
   delete[] x_arr;
   delete[] y_arr;

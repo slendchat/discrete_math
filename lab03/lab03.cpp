@@ -88,19 +88,13 @@ void is_dummy(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size)
 
 
 int t1(int *f_arr, int size){
-  bool res = 1;
-  for (int i = 1; i < size; i++){
-    res = res && (1 == f_arr[i]);
-  }
+  int res = f(1,1,1);
   cout<<"t1: "<<res<<endl;
   return res;
 }
 
 int t0(int *f_arr, int size){
-  bool res = 1;
-  for (int i = 0; i < size; i++){
-    res = res && (0 == f_arr[i]);
-  }
+  int res = !f(0,0,0);
   cout<<"t0: "<<res<<endl;
   return res;
 }
@@ -110,14 +104,9 @@ void is_monotonic(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size){
   
   int is_monotonic = 1;
 
-  if(t0(f_arr, size) || t1(f_arr, size)){
-    cout<<"monotonic"<<endl;
-    return;
-  }
-
   for (int i = 0; i < size-1; i++){
 
-    if (!(x_arr[i]<=x_arr[i+1] || y_arr[i]<=y_arr[i+1] || z_arr[i]<=z_arr[i+1])){
+    if (!(x_arr[i]<=x_arr[i+1] && y_arr[i]<=y_arr[i+1] && z_arr[i]<=z_arr[i+1])){
       continue;
     }
 
@@ -152,6 +141,7 @@ int main()
   delete[] y_arr;
   delete[] z_arr;
   delete[] f_arr;
+
   return 0;
 }
 

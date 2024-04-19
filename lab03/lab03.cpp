@@ -14,6 +14,7 @@ int equivalence(int a, int b)
 {
   return a == b;
 }
+//x || (y && !y) || z
 int f1(int x, int y, int z)
 {
   return (x || (y && !y) || z);
@@ -116,17 +117,17 @@ void is_dummy(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size)
 }
 
 
-int t1(int *f_arr, int size){
-  int res = f_arr[7];
-  cout<<"t1: "<<res<<endl;
-  return res;
-}
+  int t1(int *f_arr, int size){
+    int res = f_arr[7];
+    cout<<"t1: "<<res<<endl;
+    return res;
+  }
 
-int t0(int *f_arr, int size){
-  int res = !f_arr[0];
-  cout<<"t0: "<<res<<endl;
-  return res;
-}
+  int t0(int *f_arr, int size){
+    int res = !f_arr[0];
+    cout<<"t0: "<<res<<endl;
+    return res;
+  }
 
 
 void is_monotonic(int *x_arr, int *y_arr, int *z_arr, int *f_arr, int size){
@@ -169,12 +170,16 @@ int main()
   int *f_arr = new int[8];
   
   //f1
+  cout<<"x || (y && !y) || z"<<endl;
   analyze_func(x_arr, y_arr, z_arr, f_arr, 8,f1);
   //f2
+  cout<<"(P ^ (Q V R) -> ((R -> (P -> Q)) <-> (Q -> (R -> P))) )"<<endl;
   analyze_func(x_arr, y_arr, z_arr, f_arr, 8,f2);
   //f3
+  cout<<"((x | y)+(y|z))->(x v (!(y pirs z)))"<<endl;
   analyze_func(x_arr, y_arr, z_arr, f_arr, 8,f3);
   //f4
+  cout<<"((x -> y) pirs z) | (!(x -> y))"<<endl;
   analyze_func(x_arr, y_arr, z_arr, f_arr, 8,f4);
 
 
